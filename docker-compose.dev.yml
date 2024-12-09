@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  orders-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+      - "9229:9229" # Debug port
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=orders_db_test
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - microservices-network-dev
+    command: npm run start:dev
+
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=orders_db_test
+    ports:
+      - "5433:5432" # Different port to avoid conflicts with production
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    networks:
+      - microservices-network-dev
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5673:5672"   # Different port to avoid conflicts with production
+      - "15673:15672" # Different port for management UI
+    volumes:
+      - rabbitmq_data_dev:/var/lib/rabbitmq
+    networks:
+      - microservices-network-dev
+
+networks:
+  microservices-network-dev:
+    driver: bridge
+
+volumes:
+  postgres_data_dev:
+  rabbitmq_data_dev:
