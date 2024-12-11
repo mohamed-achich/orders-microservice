@@ -9,7 +9,7 @@ async function bootstrap() {
     options: {
       package: 'orders',
       protoPath: join(__dirname, './orders.proto'),
-      url: 'localhost:5001',
+      url: '0.0.0.0:5001'
     },
   });
 
