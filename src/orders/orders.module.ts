@@ -6,10 +6,12 @@ import { OrdersController } from './orders.controller';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { OrderSaga } from '../common/saga/order.saga';
+import { SecurityModule } from '../security/security.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, OrderItem]),
+    SecurityModule,
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
@@ -17,7 +19,7 @@ import { OrderSaga } from '../common/saga/order.saga';
           type: 'topic',
         },
       ],
-      uri: `amqp://${process.env.RABBITMQ_HOST || 'localhost'}:5672`,
+      uri: process.env.RABBITMQ_URL || 'amqp://localhost:5672',
       connectionInitOptions: { wait: false },
       enableControllerDiscovery: true,
     }),
@@ -29,7 +31,7 @@ import { OrderSaga } from '../common/saga/order.saga';
           type: 'topic',
         },
       ],
-      uri: `amqp://${process.env.RABBITMQ_HOST || 'localhost'}:5672`,
+      uri: process.env.RABBITMQ_URL || 'amqp://localhost:5672',
       connectionInitOptions: { wait: false },
     }),
   ],

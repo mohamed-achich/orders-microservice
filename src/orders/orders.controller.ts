@@ -1,10 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { Order, OrderStatus } from './entities/order.entity';
+import { ServiceAuthGuard } from '../security/guards/service.guard';
+import { AuthInterceptor } from '../security/interceptors/auth.interceptor';
 
 @Controller()
+@UseGuards(ServiceAuthGuard)
+@UseInterceptors(AuthInterceptor)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
