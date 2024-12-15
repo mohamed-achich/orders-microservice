@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  test-db:
+    image: postgres:15-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_orders_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d test_orders_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-network
+
+  orders-service-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run test:e2e
+    environment:
+      - NODE_ENV=test
+      - DB_HOST=test-db
+      - DB_PORT=5432
+      - DB_USERNAME=test_user
+      - DB_PASSWORD=test_password
+      - DB_DATABASE=test_orders_db
+      - USERS_SERVICE_URL=users-service:50051
+      - PRODUCTS_SERVICE_URL=products-service:50052
+    depends_on:
+      test-db:
+        condition: service_healthy
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
