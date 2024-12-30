@@ -6,6 +6,12 @@ Part of the [E-commerce Platform](https://github.com/mohamed-achich/ecommerce-de
 
 ## Overview
 
+[![CI/CD Pipeline](https://github.com/mohamed-achich/orders-microservice/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mohamed-achich/orders-microservice/actions)
+
+Part of the [E-commerce Platform](https://github.com/mohamed-achich/ecommerce-deployment) microservices architecture.
+
+## Overview
+
 A microservice responsible for managing orders in the e-commerce system. Built with NestJS and PostgreSQL, it provides gRPC endpoints for order management and integrates with the product service for inventory management.
 
 ## Features
@@ -33,10 +39,10 @@ A microservice responsible for managing orders in the e-commerce system. Built w
 - **CI/CD**: GitHub Actions
 
 ## Related Services
-- [API Gateway](https://github.com/MohammedAhmedZakiuddin/api-gateway) - API Gateway and Authentication Service
-- [Users Service](https://github.com/MohammedAhmedZakiuddin/users-microservice) - User Management Service
-- [Products Service](https://github.com/MohammedAhmedZakiuddin/products-microservice) - Product Catalog Service
-- [E-commerce Deployment](https://github.com/MohammedAhmedZakiuddin/ecommerce-deployment) - Infrastructure and Deployment
+- [API Gateway](https://github.com/mohamed-achich/api-gateway) - API Gateway and Authentication Service
+- [Users Service](https://github.com/mohamed-achich/users-microservice) - User Management Service
+- [Products Service](https://github.com/mohamed-achich/products-microservice) - Product Catalog Service
+- [E-commerce Deployment](https://github.com/mohamed-achich/ecommerce-deployment) - Infrastructure and Deployment
 
 ## API Documentation
 
