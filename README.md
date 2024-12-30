@@ -1,6 +1,10 @@
-
-
 # Orders Microservice
+
+[![CI/CD Pipeline](https://github.com/mohamed-achich/orders-microservice/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mohamed-achich/orders-microservice/actions)
+
+Part of the [E-commerce Platform](https://github.com/mohamed-achich/ecommerce-deployment) microservices architecture.
+
+## Overview
 
 A microservice responsible for managing orders in the e-commerce system. Built with NestJS and PostgreSQL, it provides gRPC endpoints for order management and integrates with the product service for inventory management.
 
@@ -14,10 +18,30 @@ A microservice responsible for managing orders in the e-commerce system. Built w
 - Event-driven inventory management with RabbitMQ
 - Health checks
 - Distributed transactions
+- Payment processing integration
+- Order history tracking
 
-## Order Schema
+## Technical Stack
 
-### Order Entity
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
+- **Communication**: gRPC
+- **Message Queue**: RabbitMQ
+- **Testing**: Jest
+- **CI/CD**: GitHub Actions
+
+## Related Services
+- [API Gateway](https://github.com/MohammedAhmedZakiuddin/api-gateway) - API Gateway and Authentication Service
+- [Users Service](https://github.com/MohammedAhmedZakiuddin/users-microservice) - User Management Service
+- [Products Service](https://github.com/MohammedAhmedZakiuddin/products-microservice) - Product Catalog Service
+- [E-commerce Deployment](https://github.com/MohammedAhmedZakiuddin/ecommerce-deployment) - Infrastructure and Deployment
+
+## API Documentation
+
+### Order Schema
+
 ```typescript
 {
   id: string;              // UUID
@@ -31,7 +55,8 @@ A microservice responsible for managing orders in the e-commerce system. Built w
 }
 ```
 
-### Order Item Entity
+### Order Item Schema
+
 ```typescript
 {
   id: string;         // UUID
@@ -43,34 +68,82 @@ A microservice responsible for managing orders in the e-commerce system. Built w
 ```
 
 ### Order Status Flow
+
 ```
 PENDING -> PRODUCT_RESERVED -> CONFIRMED -> COMPLETED
                            -> FAILED
                            -> CANCELLED
 ```
 
-## API Endpoints (gRPC)
+### gRPC Endpoints
 
 ```protobuf
 service OrdersService {
+  // Public endpoints
+  rpc GetOrder (OrderById) returns (Order);
+  rpc GetUserOrders (UserById) returns (OrderList);
+  
+  // Protected endpoints
   rpc CreateOrder (CreateOrderRequest) returns (Order);
-  rpc FindAll (Empty) returns (OrderList);
-  rpc FindOne (OrderById) returns (Order);
-  rpc UpdateStatus (UpdateStatusRequest) returns (Order);
-  rpc Remove (OrderById) returns (Empty);
+  rpc UpdateOrder (UpdateOrderRequest) returns (Order);
+  rpc CancelOrder (OrderById) returns (Order);
+  rpc CompleteOrder (OrderById) returns (Order);
 }
 ```
 
-## Setup and Installation
+## Getting Started
 
-1. Clone the repository
+### Prerequisites
+
+- Node.js >= 16
+- PostgreSQL >= 13
+- RabbitMQ >= 3.8
+- Docker (optional)
+
+### Local Development
+
+1. Clone the repository:
+```bash
+git clone https://github.com/mohamed-achich/orders-microservice.git
+cd orders-microservice
+```
+
 2. Install dependencies:
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
-Create a `.env` file with the following variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+4. Start PostgreSQL and RabbitMQ:
+```bash
+# Using Docker
+docker-compose up -d db rabbitmq
+
+# Or use your local instances
+```
+
+5. Run migrations:
+```bash
+npm run migration:run
+```
+
+6. Start the service:
+```bash
+# Development
+npm run start:dev
+
+# Production
+npm run build
+npm run start:prod
+```
+
+### Environment Variables
+
 ```env
 # Server
 PORT=5001
@@ -88,26 +161,17 @@ DB_DATABASE=orders
 RABBITMQ_URL=amqp://localhost:5672
 RABBITMQ_QUEUE=orders_queue
 
-# Services
-PRODUCTS_SERVICE_URL=localhost:5050
+# Service URLs
+PRODUCTS_SERVICE_URL=localhost:5001
+USERS_SERVICE_URL=localhost:5000
 
-# Security
-SERVICE_AUTH_TOKEN=your_service_auth_token
+# JWT (for authentication)
+JWT_PUBLIC_KEY=your-public-key
 ```
 
-4. Run the service:
-```bash
-# Development
-npm run start:dev
+### Docker Support
 
-# Production
-npm run start:prod
-```
-
-## Docker Support
-
-Build and run using Docker:
-
+Build the image:
 ```bash
 # Build the image
 docker build -t orders-service .
