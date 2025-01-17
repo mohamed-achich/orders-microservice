@@ -1,14 +1,31 @@
-# Orders Microservice
+# Orders Microservice Demo
 
 [![CI/CD Pipeline](https://github.com/mohamed-achich/orders-microservice/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mohamed-achich/orders-microservice/actions)
 
-Part of the [E-commerce Platform](https://github.com/mohamed-achich/ecommerce-deployment) microservices architecture.
+## About This Demo Project
 
-## Overview
+This microservice is part of a demonstration project showcasing my implementation of a scalable microservices architecture. While it uses an e-commerce context, the focus is on demonstrating clean code, proper system design, and microservices best practices rather than implementing a full e-commerce solution.
 
-[![CI/CD Pipeline](https://github.com/mohamed-achich/orders-microservice/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/mohamed-achich/orders-microservice/actions)
+### Related Components
 
-Part of the [E-commerce Platform](https://github.com/mohamed-achich/ecommerce-deployment) microservices architecture.
+- **[E-commerce Platform](https://github.com/mohamed-achich/ecommerce-deployment)** - Main deployment and infrastructure demo
+- **[API Gateway](https://github.com/mohamed-achich/api-gateway)** - API management demonstration
+- **[Users Service](https://github.com/mohamed-achich/users-microservice)** - Basic user management
+- **[Products Service](https://github.com/mohamed-achich/products-microservice)** - Simple product catalog
+
+## Orders Service Overview
+
+This service demonstrates basic order processing functionality using NestJS and PostgreSQL. It showcases distributed transaction patterns, service communication, and event-driven architecture implementations.
+
+### Key Responsibilities
+
+- Order lifecycle management
+- Payment processing integration
+- Inventory coordination with Products Service
+- Order status tracking and updates
+- Transaction history maintenance
+- Distributed transaction handling
+- Customer notification management
 
 ## Overview
 
